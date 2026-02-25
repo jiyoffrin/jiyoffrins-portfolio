@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Linkedin, Github, Send, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Github, Send, ArrowUpRight, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
+import { toast } from "sonner";
 
 const contactLinks = [
   { icon: Mail, label: "jiyoffrinjiyo@gmail.com", href: "mailto:jiyoffrinjiyo@gmail.com" },
@@ -12,10 +14,29 @@ const contactLinks = [
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    window.location.href = `mailto:jiyoffrinjiyo@gmail.com?subject=Portfolio Contact from ${form.name}&body=${form.message}%0A%0AFrom: ${form.email}`;
+    setLoading(true);
+    try {
+      await emailjs.send(
+        "service_m2c0m3j",
+        "template_z5byzja",
+        {
+          from_name: form.name,
+          from_email: form.email,
+          message: form.message,
+        },
+        "jq8ciFLgwZ7kur92l"
+      );
+      toast.success("Message sent successfully! I'll get back to you soon.");
+      setForm({ name: "", email: "", message: "" });
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -104,9 +125,11 @@ const ContactSection = () => {
             />
             <button
               type="submit"
-              className="btn-primary-gradient w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm"
+              disabled={loading}
+              className="btn-primary-gradient w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Send size={16} /> Send Message
+              {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+              {loading ? "Sending..." : "Send Message"}
             </button>
           </motion.form>
         </div>
