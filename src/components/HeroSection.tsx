@@ -64,7 +64,7 @@ const HeroSection = () => (
             <Mail size={16} /> Contact Me
           </a>
           <a
-            href="https://drive.google.com/file/d/1MB4nZjfXD90yO8hbkEGB1CaCr0W2bnIn/view"
+            href="https://drive.google.com/file/d/1wer6SMoaeAh5S5Pu2fETtquPK8JS3zcb/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium text-sm bg-card text-foreground border border-border hover:border-primary/30 transition-all duration-300 card-elevated"
